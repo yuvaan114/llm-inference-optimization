@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.log
+# Never commit model weights — they're huge and re-downloadable
+models/
+*.safetensors
+*.bin
