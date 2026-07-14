@@ -2,3 +2,6 @@ fastapi>=0.115,<0.116
 uvicorn[standard]>=0.30,<0.35
 pydantic>=2.7,<3
 pydantic-settings>=2.3,<3
+torch>=2.2
+transformers>=4.45,<5
+accelerate>=0.34

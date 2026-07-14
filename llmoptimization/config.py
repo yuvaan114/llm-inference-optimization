@@ -11,8 +11,8 @@ class Settings(BaseSettings):
     host: str = "0.0.0.0"
     port: int = 8000
 
-    # Stand-in model for CPU dev. Swap to the real H200 model later — just this line.
     model_name: str = "Qwen/Qwen2.5-0.5B-Instruct"
+    device: str | None = None   # None = auto-detect (cuda > mps > cpu)
     log_level: str = "INFO"
 
 
