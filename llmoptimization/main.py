@@ -1,7 +1,9 @@
+import json
 import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from llmoptimization.config import settings
@@ -13,9 +15,8 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    engine.load()      # runs once, when the server starts
-    yield              # server handles requests here
-    # (shutdown cleanup would go after yield)
+    engine.load()
+    yield
 
 
 app = FastAPI(title=settings.app_name, version=settings.version, lifespan=lifespan)
@@ -34,7 +35,7 @@ def health():
         "app": settings.app_name,
         "version": settings.version,
         "model": settings.model_name,
-        "model_loaded": engine.ready,   # now reports real load state
+        "model_loaded": engine.ready,
     }
 
 
@@ -42,6 +43,13 @@ def health():
 def generate(req: GenerateRequest):
     return engine.generate(req.prompt, req.max_new_tokens, req.temperature)
 
+
+@app.post("/generate/stream")
+def generate_stream(req: GenerateRequest):
+    def event_stream():
+        for event in engine.generate_stream(req.prompt, req.max_new_tokens, req.temperature):
+            yield f"data: {json.dumps(event)}\n\n"
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
 
 @app.get("/")
 def root():
