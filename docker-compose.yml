@@ -1,0 +1,17 @@
+services:
+  inference:
+    build: .
+    ports:
+      - "8000:8000"          # map host port 8000 -> container port 8000
+    environment:
+      - LLM_MODEL_NAME=Qwen/Qwen2.5-0.5B-Instruct
+    volumes:
+      - hf-cache:/root/.cache/huggingface   # persist downloaded weights
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  hf-cache:

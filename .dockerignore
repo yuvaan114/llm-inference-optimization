@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.git/
+benchmarks/results_*.json
+models/
+*.log
