@@ -5,3 +5,4 @@ pydantic-settings>=2.3,<3
 torch>=2.2
 transformers>=4.45,<5
 accelerate>=0.34
+httpx>=0.27

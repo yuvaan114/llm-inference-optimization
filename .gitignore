@@ -8,3 +8,4 @@ venv/
 models/
 *.safetensors
 *.bin
+benchmarks/results_*.json
